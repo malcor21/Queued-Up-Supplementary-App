@@ -6,14 +6,14 @@ TEXT TEXT
 
 ### Data Source
 
+TEXT TEXT
+
 ## Table of Contents
 
 ### Sub-directories
 
-- [`scripts/`](scripts): contains R scripts for data import, cleaning, and analysis
-- [`project memos/`](project memos): contains the project memos detailing earlier parts of the project
-- [`plots/`](plots): contains plots displayed in the final report
 - [`data/`](data): contains cleaned and raw data for this project
+- [`progress-memo/`](plots): contains files related to the progress memo assignment
 
 ### Files
 
@@ -29,3 +29,9 @@ Science Minor track of the Program in Statistics. The creator of this project
 can be contacted at:
 
 - Reed Malcolm, reedmalcolm2025@u.northwestern.edu
+
+TEMP NOTES
+might need to do NA wrangling and expressions for rto/iso past basic map
+https://www.arcgis.com/apps/mapviewer/index.html?panel=gallery&suggestField=true&layers=50f80920d36e435d9a34db2bd0fd3ad8
+Might need to combine for non-ISO
+Wide > narrow > wide structure

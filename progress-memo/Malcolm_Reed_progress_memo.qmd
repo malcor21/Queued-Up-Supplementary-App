@@ -19,15 +19,54 @@ National Laboratory's Energy Markets & Policy department.[^1] The dataset accomp
 April 2024 report by Rand et al. on the transmission interconnection status
 of energy generation and storage projects in the US.
 
-[^1] 
+[^1]: Rand, Joseph, Nick Manderlink, Will Gorman, Ryan H Wiser, Joachim Seel, Julie Mulvaney Kemp, Seongeun Jeong, and Fritz Kahrl."Queued Up: 2024 Edition, Characteristics of Power Plants Seeking Transmission Interconnection As of the End of 2023." (2024). https://emp.lbl.gov/queues
+
+The "Queued Up 2024" report synthesizes data from independent system operators (ISOs),
+regional transmission organizations (RTOs), and other relevant entities including
+utilities. Data cleaning was conducted by the Berkeley Lab team.
+
+Depending on the visualizations included in the final product, this project might
+include useful datasets (e.g., geographic boundaries) from other sources. Those sources
+will be cited in the final product if included.
 
 ## Basic data description
 
-Response here.
+The "Queued Up 2024" dataset 
+
+Demonstrate you have been able to read/load your data into R. Along with this, you should give a brief overview of the data:
+
+    How many observations?
+    How many variables?
+    Are there various types of variables (maybe the number of each type)
+    Are there missingness issues?
+
+Using skimr::skim_without_charts() can make this very easy.
+
+33256 rows, each representing a generation or storage project that developer initiated
+service request into queue
+
+29 columns: 23 chr, 1 log, 5 num
+
+However: exclude county_2 and county_3, ia_status_raw
+
+Then: 21 chr, 5 num
+
+Most tidying already done
+
+Missingness: potentially yes, but mostly due to conditionality
+* ia_date and wd_date are mutually exclusive (project can't be both active and withdrawn)
+* shouldn't be an issue for viz, since viz separately
+* also missingness for county_2/county_3 and mw_2/mw_3 and type_2/type_3, conditionality
+* For rest of variables some but not much missingness (usually in 90s complete)
+
 
 ## Why this data
 
 Response here.
+
+> transmission is important today (cite mckinsey)
+> Interconnection is a big issue
+> US transmission is fragmented, so complex
 
 > Report is interesting, but uses static images where lots
 of potential for dynamic viz
@@ -40,8 +79,11 @@ graphics
 
 Response here.
 
+Already has:
+capacity by region, plus summary of capacity by time with type breakdown
+
 > App with multiple tabs
-> > Capacity currently in queue by ISO or state
+
 *> > Completion rate by ISO or state (page 3)
 *> > Duration time (IR - COD, by COD year - page 43) by ISO, type
 *> > IR - IA duration by ISO, type
@@ -50,9 +92,9 @@ Response here.
 > > Requests over time (sliding year option)
 *> > > Capacity and number of requests options, maybe type
 > > > bar or line
-*> > Requests by type map
+*> > Requests by type map (county or ISO)
 *> > Map: capacity (or type) by county
-*> > Complete rate by ISO or state
+*> > Complete rate by ISO or state (checkboxes to add)
 
 ### Misc
 
