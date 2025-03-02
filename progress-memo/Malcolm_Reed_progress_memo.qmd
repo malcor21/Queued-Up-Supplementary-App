@@ -1,0 +1,60 @@
+---
+title: "Progress Memo"
+subtitle: |
+  | Final Project 
+  | Data Visualization (STAT 302)
+author: "Reed Malcolm"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+---
+
+## Data source
+
+This final project will utilize the "Queued Up 2024" dataset from the Lawrence Berkeley
+National Laboratory's Energy Markets & Policy department.[^1] The dataset accompanies an
+April 2024 report by Rand et al. on the transmission interconnection status
+of energy generation and storage projects in the US.
+
+[^1] 
+
+## Basic data description
+
+Response here.
+
+## Why this data
+
+Response here.
+
+> Report is interesting, but uses static images where lots
+of potential for dynamic viz
+> Very nice Tableau interactive viz, but only for some
+(mostly total capacity)
+> Want to supplement with type-, duration-, and map- based
+graphics
+
+## Visualization plan
+
+Response here.
+
+> App with multiple tabs
+> > Capacity currently in queue by ISO or state
+*> > Completion rate by ISO or state (page 3)
+*> > Duration time (IR - COD, by COD year - page 43) by ISO, type
+*> > IR - IA duration by ISO, type
+> > > With option to add average
+* > > Examination of active/widthrawn/completed by type
+> > Requests over time (sliding year option)
+*> > > Capacity and number of requests options, maybe type
+> > > bar or line
+*> > Requests by type map
+*> > Map: capacity (or type) by county
+*> > Complete rate by ISO or state
+
+### Misc
+
+Response here.
+

@@ -1,0 +1,155 @@
+---
+title: "Progress Memo 1"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Reed Malcolm"
+pagetitle: "PM1 Reed Malcolm"
+date: "02-07-2025"
+format:
+  html:
+    
+    toc: true
+    embed-resources: true
+execute:
+  warning: false
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+::: {.callout-tip icon="false"}
+## Github Repo Link
+
+[Reed's Final Project GitHub
+Repo](https://github.com/stat301-2-2025-winter/final-project-2-malcor21.git)
+:::
+
+```{r}
+#| label: data-and-pacakges
+#| echo: false
+
+# loading packages
+library(tidyverse)
+
+```
+
+
+## Prediction problem
+
+
+This final project will investigate the predictive power of social characteristics
+data on voting habits. Specifically, I will construct a
+regression problem to examine how county-level demographic information might
+be used to forecast Democratic Party presidential voteshare in the 2020 US election.
+
+I am pursuing this final project topic on account of my personal 
+interest in elections and social science broadly. It is certainly 
+important for campaigns to estimate their support based on
+demographic data rather than polling alone; political consultants likely employ
+a variety of predictive modeling methods to advise their clients. However, I am
+approaching this topic from the standpoint of a hobbyist observer---I hope that 
+this project will present an enjoyable opportunity to apply my data science skills
+to a subset of social science data with which I am already somewhat familiar.
+And while the particular workflows developed during the project are not necessarily applicable
+to other elections on account of changing demographics and political trends, I hope
+that the lessons I learn here regarding feature engineering with survey data will
+prove useful in my future personal and professional endeavors.
+
+## Data source
+
+This final project will utilize the "US Election Dataset" constructed by Kaggle user Essarabi.[^1] The .csv file
+includes information on voting habits (raw counts and shares) as well as demographic characteristics,
+such as racial makeup, education, income, and occupation, at the county level. According
+to Essarabi, data is sourced from the 2020 US Decennial Census, the American Community 
+Survey's 2022 5-year estimates, and the "US Election 2020" Kaggle dataset.[^2]
+
+[^1]: Essarabi (2024), [US Election Dataset](https://www.kaggle.com/datasets/essarabi/ultimate-us-election-dataset)
+    
+[^2]: Fontes, R (n.d.), [US Election 2020](https://www.kaggle.com/datasets/unanimad/us-election-2020)
+
+## Data quality check
+
+```{r}
+#| label: tbl-data
+#| tbl-cap: Overview of US Election Dataset
+#| echo: false
+
+tribble(
+  ~`Version`, ~`Observations`, ~`Columns`, ~`Numeric variables`, ~`Character variables`,
+  "As-imported", 3143, 35, 25, 10, 
+  "Tidy", 3143, 28, 27, 1
+  ) %>% 
+  knitr::kable()
+```
+
+The "US Election Dataset" .csv file imports with 3143 rows and 35 columns. Though it
+falls on the lower end of acceptable observation counts, the dataset is naturally
+limited by the number of counties in the United States.
+
+25 of the file's
+variables, largely demographic statistics, are numeric. Five of those numeric columns
+will almost certainly be excluded in future stages of this project: three consist of
+raw vote counts, which are redundant, and two provide the vote share for Republican and Other presidential
+candidates. The latter columns, being unobservable prior to the 2020 US election, 
+do not constitute useful predictors.
+
+The "US Election Dataset" also contains 10 character variables. Two of these are
+duplicate county or state identifiers that will be discarded. An additional seven character variables in
+the dataset are actually miscoded numeric features that correspond to education 
+levels. At least some of those columns will be converted to numeric proportions during preprocessing.
+
+Finally, the dataset has practically no missingness: every column except 
+`Median income (dollars)`, which lacks just a single observation, has a 100%
+complete rate. "US Election Dataset" is also tidy upon import, with one row
+corresponding to a single county-observation, save for the character variable
+miscoding mentioned previously.
+
+@tbl-data above provides an overview of the structure of the "US Election Dataset".
+Values are provided both for the file as imported and for an anticipated tidied
+version that will be developed prior to the modeling process.
+
+## Target variable analysis
+
+```{r}
+#| label: tbl-stat
+#| tbl-cap: Statistical overview of Democratic presidential vote share, 2020
+#| echo: false
+
+tribble(
+  ~Mean, ~`SD`, ~`0 pct`, ~`25 pct`, ~`50 pct`, ~`75 pct`, ~`100 pct`,
+  33.4, 16.0, 3.09, 21.0, 30.0, 42.6, 95.8
+  ) %>% 
+  knitr::kable()
+```
+
+@tbl-stat displays summary statistics for `2020 Democrat vote %`, the county-level
+vote share for the Democratic presidential candidate in the 2020 US election, as obtained from the 
+`skimr` package's `skim_without_charts` function. The mean of the Democratic voteshare variable
+slightly exceeds its median, indicating that the prediction problem's target variable
+is somewhat right-skewed.
+
+![Distribution of Democratic presidential vote share at the county level, 2020](../figures/vote_patchwork.jpg){#fig-patchwork}
+
+The above @fig-patchwork illustrates that weak right skew: the shape 
+of `2020 Democrat vote %` is slightly asymmetric, with a long right tail
+from the median of 30% to the maximum of 95.8%. This distribution makes intuitive
+sense, as Democrats are generally expected to succeed in a smaller number of high-population
+counties. However, it is not apparent that a logarithmic transformation of
+`2020 Democrat vote %` is required at the outset of the modeling process given the weakness of the 
+right skew and the lack of extreme right tail values. I therefore keep vote share
+in untransformed for the time being, although I would be happy
+to discuss the usefulness of an outcome variable transformation in the future.
+
+## Misc
+
+I would be interested in incorporating 2024 presidential election data into this
+final project if time permits. Since county-level demographics likely experienced
+only limited change between the 2020 and 2024 US elections, I might consider adding
+a 2024 Democratic presidential voteshare column to the dataset and comparing the 
+predictive accuracy of project workflows between the two cases (i.e., exploring if
+the most accurate workflow for predicting 2020 voteshare holds up in 2024). Please
+let me know if you have any thoughts or tips on this idea!
