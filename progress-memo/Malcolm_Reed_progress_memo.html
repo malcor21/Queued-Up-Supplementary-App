@@ -3055,10 +3055,7 @@ vertical-align: -.125em;
   <li><a href="#data-source" id="toc-data-source" class="nav-link active" data-scroll-target="#data-source">Data source</a></li>
   <li><a href="#basic-data-description" id="toc-basic-data-description" class="nav-link" data-scroll-target="#basic-data-description">Basic data description</a></li>
   <li><a href="#why-this-data" id="toc-why-this-data" class="nav-link" data-scroll-target="#why-this-data">Why this data</a></li>
-  <li><a href="#visualization-plan" id="toc-visualization-plan" class="nav-link" data-scroll-target="#visualization-plan">Visualization plan</a>
-  <ul class="collapse">
-  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc">Misc</a></li>
-  </ul></li>
+  <li><a href="#visualization-plan" id="toc-visualization-plan" class="nav-link" data-scroll-target="#visualization-plan">Visualization plan</a></li>
   </ul>
 </nav>
 </div>
@@ -3100,37 +3097,32 @@ Data Visualization (STAT 302)</div><p></p>
 <section id="data-source" class="level2">
 <h2 class="anchored" data-anchor-id="data-source">Data source</h2>
 <p>This final project will utilize the “Queued Up 2024” dataset from the Lawrence Berkeley National Laboratory’s Energy Markets &amp; Policy department.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The dataset accompanies an April 2024 report by Rand et al. on the transmission interconnection status of energy generation and storage projects in the US.</p>
+<p>The “Queued Up 2024” report synthesizes data from independent system operators (ISOs), regional transmission organizations (RTOs), and other relevant entities including utilities. Data cleaning was conducted by the Berkeley Lab team.</p>
+<p>Depending on the visualizations included in the final product, this project might include useful data (e.g., geographic boundaries) from other sources. Those sources will be cited in the final product if included.</p>
 </section>
 <section id="basic-data-description" class="level2">
 <h2 class="anchored" data-anchor-id="basic-data-description">Basic data description</h2>
-<p>Response here.</p>
+<p>The “Queued Up 2024” dataset contains 33256 rows, each representing a unique generation or storage project that has entered the US grid interconnection queue. It is generally tidy, with one column per variable and one value per cell.</p>
+<p>The data imports with 29 columns, including 23 character variables, 1 logical, and 5 numerics. However, three of those columns can be removed: <code>ia_status_raw</code> is vestigial, while <code>county_2</code> and <code>county_3</code> will not be useful for the purposes of this project. I therefore modify the dataset such that it contains 21 character and 5 numeric variables.</p>
+<p>Although there exists notable missingness across parts of the dataset, most instances are due to conditionality rather than a lack of information. For instance, the <code>ia_date</code>, <code>wd_date</code>, and <code>on_date</code> variables are mutually exclusive, as they require a project to be either approved, withdrawn, or operational, and therefore demonstrate high missingness. Cases like this should not prove an issue for the project’s visualizations; approved, withdrawn, and operational developments will likely be represented in different figures. The <code>mw_2</code>/<code>mw_3</code> and <code>type_2</code>/<code>type_3</code>, which are used for multifacted projects, indicate missingness for similar reasons. The majority of variables in the dataset ultimately report complete rates at 90 percent or higher, which should be sufficient for visualization given the size of the file.</p>
 </section>
 <section id="why-this-data" class="level2">
 <h2 class="anchored" data-anchor-id="why-this-data">Why this data</h2>
-<p>Response here.</p>
-<blockquote class="blockquote">
-<p>Report is interesting, but uses static images where lots of potential for dynamic viz Very nice Tableau interactive viz, but only for some (mostly total capacity) Want to supplement with type-, duration-, and map- based graphics</p>
-</blockquote>
+<p>Electricity demand has seen an unexpected rise in recent years due to new heavy-hitter consumers, like manufacturing facilities and data centers. To keep up with load growth while integrating clean, cheap renewables, US electricity infrastructure must be reformed, modernized, and expanded. Currently, a wealth of (largely renewable) energy projects are seeking approval to eventually enter the grid, a process known as the interconnection queue. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The “Queued Up 2024” report provides a comprehensive picture on the type, location, and status of energy developments moving through the interconnection process. The attached PowerPoint briefing, which can be found on the project’s website, presents a wide variety of insightful static images. The complexity of the data suggests that dynamic visualization could prove a worthwhile supplement to the report. In fact, the “Queued Up 2024” page already includes a useful interactive portal that hosts a number of highly polished visualizations on queued generative capacity. However, further visualization exercises could seek to translate other dimensions of the interconnection queue dataset into a dynamic context.</p>
 </section>
 <section id="visualization-plan" class="level2">
 <h2 class="anchored" data-anchor-id="visualization-plan">Visualization plan</h2>
-<p>Response here.</p>
-<p>Already has: capacity by region, plus summary of capacity by time with type breakdown</p>
-<blockquote class="blockquote">
-<p>App with multiple tabs</p>
-</blockquote>
-<p><em>&gt; &gt; Completion rate by ISO or state (page 3) </em>&gt; &gt; Duration time (IR - COD, by COD year - page 43) by ISO, type <em>&gt; &gt; IR - IA duration by ISO, type &gt; &gt; &gt; With option to add average </em> &gt; &gt; Examination of active/widthrawn/completed by type &gt; &gt; Requests over time (sliding year option) <em>&gt; &gt; &gt; Capacity and number of requests options, maybe type &gt; &gt; &gt; bar or line </em>&gt; &gt; Requests by type map (county or ISO) <em>&gt; &gt; Map: capacity (or type) by county </em>&gt; &gt; Complete rate by ISO or state (checkboxes to add)</p>
-<section id="misc" class="level3">
-<h3 class="anchored" data-anchor-id="misc">Misc</h3>
-<p>Response here.</p>
-</section>
+<p>I aim to supplement the “Queued Up 2024” project’s existing static and dynamic data visualizations with additional interactive graphics exploring the dataset’s energy type, queue duration, project status, and location dimensions. The report’s existing interactive data tool provides visualizations of queued capacity by region and queued capacity over time, both with toggable energy type options. The associated interactive maps, also linked on the website, display queued capacity by state and county.</p>
+<p>This final project will use an R ShinyApp to visualize how queue status, approval time, and approval rates vary across relevant dimensions. Possible dynamic graphics hosted on the app include: interconnection requests over time; generative capacity by energy type over time; approval rate by location, energy type, and generative capacity; approval time by location, energy type, and generative capacity; and the difference between proposed and actual operation dates by location, time, and generative capacity. I might also recreate or retool the project’s current dynamic visualizations for the sake of narrative-building within my own final project.</p>
 </section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>Rand, Joseph, Nick Manderlink, Will Gorman, Ryan H Wiser, Joachim Seel, Julie Mulvaney Kemp, Seongeun Jeong, and Fritz Kahrl.”Queued Up: 2024 Edition, Characteristics of Power Plants Seeking Transmission Interconnection As of the End of 2023.” (2024).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>“Queued Up: 2024 Edition, Characteristics of Power Plants Seeking Transmission Interconnection As of the End of 2023.” From J. Rand, N. Manderlink, W. Gorman, R. Wiser, J. Seel, J. Kemp, S. Jeong, and F. Karhl, 2024. <a href="https://emp.lbl.gov/queues" class="uri">https://emp.lbl.gov/queues</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>“Lots of demand, too little grid: The state of the US power sector”, From J. St. John, 2025, Canary Media. <a href="https://www.canarymedia.com/articles/transmission/lots-of-demand-too-little-grid-the-us-power-sector-in-202" class="uri">https://www.canarymedia.com/articles/transmission/lots-of-demand-too-little-grid-the-us-power-sector-in-202</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

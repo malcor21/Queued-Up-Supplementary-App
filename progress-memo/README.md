@@ -35,3 +35,13 @@ might need to do NA wrangling and expressions for rto/iso past basic map
 https://www.arcgis.com/apps/mapviewer/index.html?panel=gallery&suggestField=true&layers=50f80920d36e435d9a34db2bd0fd3ad8
 Might need to combine for non-ISO
 Wide > narrow > wide structure
+*> > Completion rate by ISO or state (page 3)
+*> > Duration time (IR - COD, by COD year - page 43) by ISO, type
+*> > IR - IA duration by ISO, type
+> > > With option to add average
+* > > Examination of active/widthrawn/completed by type
+> > Requests over time (sliding year option)
+*> > > Capacity and number of requests options, maybe type
+> > > bar or line
+*> > Requests by type map (county or ISO)
+*> > Complete rate by ISO or state (checkboxes to add)
