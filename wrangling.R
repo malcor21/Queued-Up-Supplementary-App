@@ -27,5 +27,18 @@ intq <- intq %>%
     q_date = as.Date(q_date, "%m/%d/%Y")
   )
 
+# fixing MISO dates - assume 1/1, use given year
+MISO_fix <- function(data){
+  data %>%
+    mutate(q_date = if_else(
+      region == "MISO",
+      as.Date(paste(1, 1, q_year, sep = "/"), "%m/%d/%Y"),
+      q_date
+    ))
+}
+
+intq <- intq %>% 
+  MISO_fix()
+
 # saving wrangling intq
 save(intq, file = here::here("data/intq.rda"))
