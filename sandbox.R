@@ -24,7 +24,6 @@ non_iso %>%
   )
   
 
-
 # extract sum where region = CAISO
 
 

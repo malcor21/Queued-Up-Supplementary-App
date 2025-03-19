@@ -61,19 +61,17 @@ ui <-  page_sidebar(
     
     nav_panel(
       
-      "Tab 1",
+      "Interconnection Queue by Region",
       
       navset_card_underline(
         
         nav_panel(
-          "requests_map", 
-          "title1",
+          "Mainland US Map", 
           plotOutput(outputId = "requests_map")
           ),
         
         nav_panel(
-          "requests_bar", 
-          "title2",
+          "Bar Chart", 
           plotOutput(outputId = "requests_bar")
           ),
         
@@ -270,23 +268,55 @@ server <-  function(input, output) {
         )
     })
     
+    # reactive labels for requests_bar
+    requests_bar_title <- reactive({
+      case_when(
+        input$viz_type == "Number of projects" ~ "Projects in queue by region",
+        input$viz_type == "Total capacity" ~ "Total queued capacity by region"
+    )
+    })
+    
+    requests_bar_ylab <- reactive({
+      case_when(
+        input$viz_type == "Number of projects" ~ "Number of projects",
+        input$viz_type == "Total capacity" ~ "Total queued capacity (MW)"
+      )
+    })
+    
     # requests_bar
     output$requests_bar <- renderPlot({
-      
-      # DATES
       
       sumvar_Input() %>%
         ggplot(aes(x = region, y = sum, fill = region)) +
         geom_col() +
         theme_minimal() +
         labs(
-          title = "Sum of mw_total by Region",
+          title = requests_bar_title(),
           x = "Region",
-          y = "Total MW"
+          y = requests_bar_ylab()
         ) +
         scale_fill_viridis_d() +
         theme(
           legend.position = "none"
+        ) +
+        scale_y_continuous(
+          labels = scales::comma,
+          expand= c(0, 0)
+        ) +
+        theme(
+          plot.title = element_text(
+            face = "bold",
+            size = 18
+          ),
+          axis.title = element_text(
+            size = 14
+          ),
+          axis.text.x = element_text(
+            size = 13
+          ),
+          axis.text.y = element_text(
+            size = 11
+          )
         )
       
     })
