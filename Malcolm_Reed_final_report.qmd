@@ -12,6 +12,13 @@ format:
     embed-resources: true
 ---
 
+::: {.callout-tip icon="false"}
+## Github Repo Link
+
+
+[Final Project GitHub Repo Link](https://github.com/malcor21/stat-302-final.git)
+:::
+
 ## Data source
 
 This final project will utilize the "Queued Up 2024" dataset from the Lawrence Berkeley
