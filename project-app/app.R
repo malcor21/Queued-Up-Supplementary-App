@@ -7,7 +7,7 @@ library(shiny)
 
 # loading data ----
 non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final.shp"))
-intq <- load(here::here("data/intq.rda"))
+load(here::here("data/intq.rda"))
 
 shinyApp(
   
@@ -51,7 +51,7 @@ ui <-  page_sidebar(
         nav_panel(
           "requests_bar", 
           "title2",
-          plotOutput(outputID = "requests_bar")
+          plotOutput(outputId = "requests_bar")
           ),
         
         id = "subtab_1"
@@ -118,8 +118,25 @@ server <-  function(input, output, session) {
     
     output$requests_bar <- renderPlot({
       
-      intq %>% 
-        ggplot(aes(x = ))
+      # DATES
+      
+      intq %>%
+        filter(q_year >= input$time[1] & q_year <= input$time[2]) %>% 
+        filter(!is.na(region)) %>% 
+        group_by(region) %>%
+        summarize(mw_sum = sum(mw_total, na.rm = TRUE)) %>% 
+        ggplot(aes(x = region, y = mw_sum, fill = region)) +
+        geom_col() +
+        theme_minimal() +
+        labs(
+          title = "Sum of mw_total by Region",
+          x = "Region",
+          y = "Total MW"
+        ) +
+        scale_fill_viridis_d() +
+        theme(
+          legend.position = "none"
+        )
       
     })
     
