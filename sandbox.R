@@ -4,15 +4,26 @@ load(here::here('data/intq.rda'))
 non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final_v2.shp"))
 
 # requests_map
+st_bbox(non_iso) # retrieve x and y limits
 
 non_iso %>% 
   ggplot(aes(fill = RTO_ISO)) +
   geom_sf() +
-  theme_void() +
-  scale_fill_viridis_d()
+  # theme_void() +
+  scale_fill_viridis_d() +
+  theme(
+    legend.position = "none"
+  ) +
+  annotate(
+    "text",
+    x = -13898124,
+    y = 4091053,
+    label = paste("CAISO", sep = "\n")
+  )
+  
 
 
-
+# extract sum where region = CAISO
 
 
 county_data <- read_sf("data/county_data.shp") %>% 

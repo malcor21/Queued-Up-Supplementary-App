@@ -6,7 +6,7 @@ library(sf)
 library(shiny)
 
 # loading data ----
-non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final.shp"))
+non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final_v2.shp"))
 load(here::here("data/intq.rda"))
 
 # defining functions ----
@@ -34,7 +34,7 @@ ui <-  page_sidebar(
       label = "Adjust the slider to set time bounds:",
       min = as.Date("01/01/1996","%m/%d/%Y"),
       max = as.Date("01/01/2024","%m/%d/%Y"),
-      value = c(as.Date("01/01/2024"), as.Date("01/01/1996")),
+      value = c(as.Date("1996/01/01"), as.Date("2024/01/01")),
       timeFormat="%Y-%m-%d"
     ),
     
@@ -122,21 +122,44 @@ server <-  function(input, output) {
       
     })
     
-    # requests_map
-    output$requests_map <- renderPlot({
-      
-      non_iso %>% 
-        ggplot() +
-        geom_sf() +
-        theme_void()
-    })
-    
-    # reactive expression for requests_bar
+    # reactive expression for requests_map and requests_bar
     sumvar_Input <- reactive({
       intq %>% 
         filter(q_date >= input$time[1] & q_date <= input$time[2]) %>% 
         filter(!is.na(region)) %>% 
         sum_var(input$viz_type)
+    })
+    
+    # suffix for requests_map
+    suffix <- reactive({
+      if_else(
+        input$viz_type == "Number of projects",
+        " projects",
+        " MW"
+      )
+    })
+    
+    # requests_map
+    output$requests_map <- renderPlot({
+      
+      non_iso %>% 
+        ggplot(aes(fill = RTO_ISO)) +
+        geom_sf() +
+        theme_void() +
+        scale_fill_viridis_d() +
+        theme(
+          legend.position = "none"
+        ) +
+        annotate(
+          "text",
+          x = -13898124,
+          y = 4091053,
+          label = paste(
+            "CAISO\n", 
+            subset(sumvar_Input(), region == "CAISO", select = sum),
+            suffix(),
+            sep = "")
+        )
     })
     
     # requests_bar
