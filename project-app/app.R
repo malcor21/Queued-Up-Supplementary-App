@@ -9,8 +9,22 @@ library(shiny)
 non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final.shp"))
 load(here::here("data/intq.rda"))
 
+# defining functions ----
+sum_var <- function(data, viz_type) {
+  if (viz_type == "Number of projects") {
+    data %>%
+      group_by(region) %>%
+      summarize(sum = n(), .groups = "drop")
+  } 
+  else if (viz_type == "Total capacity") {
+    data %>%
+      group_by(region) %>%
+      summarize(sum = sum(mw_total, na.rm = TRUE), .groups = "drop")
+  } 
+}
+
 shinyApp(
-  
+     
 ui <-  page_sidebar(
   
   sidebar = sidebar(
@@ -27,8 +41,8 @@ ui <-  page_sidebar(
     radioButtons(
       "viz_type",
       label = "Project count or capacity?",
-      c("Number of projects" = 1,
-        "Total capacity" = 2)
+      c("Number of projects" = "Number of projects",
+        "Total capacity" = "Total capacity")
     )
     
   ),
@@ -72,7 +86,7 @@ ui <-  page_sidebar(
   )
 ),
   
-server <-  function(input, output, session) {
+server <-  function(input, output) {
     
     output$tab_controls <- renderUI({
       choices = if (input$parent_tabs == "Tab 1") {
@@ -108,6 +122,7 @@ server <-  function(input, output, session) {
       
     })
     
+    # requests_map
     output$requests_map <- renderPlot({
       
       non_iso %>% 
@@ -116,16 +131,21 @@ server <-  function(input, output, session) {
         theme_void()
     })
     
+    # reactive expression for requests_bar
+    sumvar_Input <- reactive({
+      intq %>% 
+        filter(q_year >= input$time[1] & q_year <= input$time[2]) %>% 
+        filter(!is.na(region)) %>% 
+        sum_var(input$viz_type)
+    })
+    
+    # requests_bar
     output$requests_bar <- renderPlot({
       
       # DATES
       
-      intq %>%
-        filter(q_year >= input$time[1] & q_year <= input$time[2]) %>% 
-        filter(!is.na(region)) %>% 
-        group_by(region) %>%
-        summarize(mw_sum = sum(mw_total, na.rm = TRUE)) %>% 
-        ggplot(aes(x = region, y = mw_sum, fill = region)) +
+      sumvar_Input() %>%
+        ggplot(aes(x = region, y = sum, fill = region)) +
         geom_col() +
         theme_minimal() +
         labs(
