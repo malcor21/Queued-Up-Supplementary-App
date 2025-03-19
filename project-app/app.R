@@ -1,8 +1,13 @@
+# loading packages ----
 library(tidyverse)
 library(ggthemes)
 library(bslib)
 library(sf)
 library(shiny)
+
+# loading data ----
+non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final.shp"))
+intq <- load(here::here("data/intq.rda"))
 
 shinyApp(
   
@@ -17,7 +22,15 @@ ui <-  page_sidebar(
       max = 2023,
       value = c(1995, 2023),
       sep = ""
+    ),
+    
+    radioButtons(
+      "viz_type",
+      label = "Project count or capacity?",
+      c("Number of projects" = 1,
+        "Total capacity" = 2)
     )
+    
   ),
   
   navset_card_underline(
@@ -29,8 +42,18 @@ ui <-  page_sidebar(
       
       navset_card_underline(
         
-        nav_panel("Function 1", "Here's the content for Tab 1, Function 1, with a `br()` between parents and sub-tab"),
-        nav_panel("Function 2", "Here's the content for Tab 1, Function 2, with a `br()` between parents and sub-tab"),
+        nav_panel(
+          "requests_map", 
+          "title1",
+          plotOutput(outputId = "requests_map")
+          ),
+        
+        nav_panel(
+          "requests_bar", 
+          "title2",
+          plotOutput(outputID = "requests_bar")
+          ),
+        
         id = "subtab_1"
       )
     ),
@@ -84,6 +107,23 @@ server <-  function(input, output, session) {
       }
       
     })
+    
+    output$requests_map <- renderPlot({
+      
+      non_iso %>% 
+        ggplot() +
+        geom_sf() +
+        theme_void()
+    })
+    
+    output$requests_bar <- renderPlot({
+      
+      intq %>% 
+        ggplot(aes(x = ))
+      
+    })
+    
+    
   }
 )
 

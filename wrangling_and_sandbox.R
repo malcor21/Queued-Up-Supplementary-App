@@ -1,3 +1,34 @@
+# Data wrangling script for Stat 302 final
+
+# loading packages
+library(tidyverse)
+
+# loading original dataset
+intq <- read_csv(here::here("data/queues_import/queues.csv"))
+
+# wrangling intq
+intq <- intq %>% 
+  mutate(
+    across(c(mw1, mw2, mw3), ~ if_else(is.na(.), 0, .))
+  ) %>% 
+  mutate(
+    mw_total = mw1 + mw2 + mw3
+  )
+
+# saving wrangling intq
+save(intq, file = here::here("data/intq.rda"))
+
+
+
+
+
+
+
+
+
+
+
+
 county_data <- read_sf("data/county_data.shp") %>% 
   mutate(state = str_to_title(state))
 
@@ -95,6 +126,10 @@ unique(intq$region)
 library(sf)
 non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final.shp"))
 non_iso %>% 
-  ggplot() +
-  geom_sf()
+  ggplot(aes(fill = RTO_ISO)) +
+  geom_sf() +
+  theme(
+    legend.position = "none"
+  )
+
 
