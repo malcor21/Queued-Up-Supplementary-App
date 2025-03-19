@@ -6,6 +6,8 @@ non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final_v2.shp"))
 # requests_map
 st_bbox(non_iso) # retrieve x and y limits
 
+unique(intq$region)
+
 non_iso %>% 
   ggplot(aes(fill = RTO_ISO)) +
   geom_sf() +

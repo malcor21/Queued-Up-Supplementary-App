@@ -21,7 +21,7 @@ intq <- intq %>%
 # fixing a problem q_date column
 intq[intq$q_date == "12/17/14" & !is.na(intq$q_date), "q_date"] <- "12/17/2014"
 
-# reassigning q_date as date
+# reassigning as dates and filtering NAs that can't be visualized
 intq <- intq %>% 
   mutate(
     q_date = as.Date(q_date, "%m/%d/%Y"),
@@ -36,11 +36,11 @@ intq <- intq %>%
     )
   ) %>% 
   filter(
-    ia.na(on_date) | on_date >= as.Date("1/1/1999", "%m/%d/%Y")
+    is.na(on_date) | on_date >= as.Date("1/1/1999", "%m/%d/%Y")
+  ) %>% 
+  filter(
+    !is.na(ia_date) | !is.na(wd_date) | !is.na(on_date)
   )
-
-### REMOVE ROWS w/ MISSSING ON_ AND WD_
-
 
 # fixing MISO dates - assume 1/1, use given year
 MISO_fix <- function(data){

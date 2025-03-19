@@ -23,6 +23,15 @@ sum_var <- function(data, viz_type) {
   } 
 }
 
+upper_bound <- function(data, time) {
+  data %>%
+    filter(
+      (!is.na(wd_date) & wd_date <= time[2]) |
+      (!is.na(on_date) & on_date <= time[2]) |
+      (is.na(wd_date) & is.na(on_date))
+    )
+}
+
 shinyApp(
      
 ui <-  page_sidebar(
@@ -126,11 +135,7 @@ server <-  function(input, output) {
     sumvar_Input <- reactive({
       intq %>% 
         filter(q_date >= input$time[1]) %>% 
-        if_else(
-          !is.na(wd_date),
-          filter(wd_date <= input$time[2]),
-          ###########
-        )
+        upper_bound(input$time) %>% 
         filter(!is.na(region)) %>% 
         sum_var(input$viz_type)
     })
@@ -143,8 +148,6 @@ server <-  function(input, output) {
         " MW"
       )
     })
-    
-    q_date <= input$time[2]
     
     # requests_map
     output$requests_map <- renderPlot({
@@ -165,7 +168,105 @@ server <-  function(input, output) {
             "CAISO\n", 
             subset(sumvar_Input(), region == "CAISO", select = sum),
             suffix(),
-            sep = "")
+            sep = ""
+              ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -12298124,
+          y = 4981053,
+          label = paste(
+            "West (non-ISO)\n", 
+            subset(sumvar_Input(), region == "West (non-ISO)", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -11698124,
+          y = 3099053,
+          label = paste(
+            "ERCOT\n", 
+            subset(sumvar_Input(), region == "ERCOT", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -10890124,
+          y = 4651053,
+          label = paste(
+            "SPP\n", 
+            subset(sumvar_Input(), region == "SPP", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -9350124,
+          y = 6100000,
+          label = paste(
+            "MISO\n", 
+            subset(sumvar_Input(), region == "MISO", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -9400124,
+          y = 3920000,
+          label = paste(
+            "Southeast (non-ISO)\n", 
+            subset(sumvar_Input(), region == "Southeast (non-ISO)", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -8050000,
+          y = 4671053,
+          label = paste(
+            "PJM\n", 
+            subset(sumvar_Input(), region == "PJM", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -8780124,
+          y = 5550000,
+          label = paste(
+            "NYISO\n", 
+            subset(sumvar_Input(), region == "NYISO", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
+        ) +
+        annotate(
+          "text",
+          x = -7600000,
+          y = 5305053,
+          label = paste(
+            "ISO-NE\n", 
+            subset(sumvar_Input(), region == "ISO-NE", select = sum),
+            suffix(),
+            sep = ""
+          ),
+          size = 4
         )
     })
     
