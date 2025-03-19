@@ -125,7 +125,12 @@ server <-  function(input, output) {
     # reactive expression for requests_map and requests_bar
     sumvar_Input <- reactive({
       intq %>% 
-        filter(q_date >= input$time[1] & q_date <= input$time[2]) %>% 
+        filter(q_date >= input$time[1]) %>% 
+        if_else(
+          !is.na(wd_date),
+          filter(wd_date <= input$time[2]),
+          ###########
+        )
         filter(!is.na(region)) %>% 
         sum_var(input$viz_type)
     })
@@ -138,6 +143,8 @@ server <-  function(input, output) {
         " MW"
       )
     })
+    
+    q_date <= input$time[2]
     
     # requests_map
     output$requests_map <- renderPlot({

@@ -27,7 +27,19 @@ intq <- intq %>%
     q_date = as.Date(q_date, "%m/%d/%Y"),
     wd_date = as.Date(wd_date, "%m/%d/%Y"),
     on_date = as.Date(on_date, "%m/%d/%Y")
+  ) %>% 
+  mutate(
+    wd_date = if_else(
+      wd_date <= as.Date("1/1/1945", "%m/%d/%Y"),
+      wd_date %m+% years(2000),
+      wd_date
+    )
+  ) %>% 
+  filter(
+    ia.na(on_date) | on_date >= as.Date("1/1/1999", "%m/%d/%Y")
   )
+
+### REMOVE ROWS w/ MISSSING ON_ AND WD_
 
 
 # fixing MISO dates - assume 1/1, use given year
@@ -43,7 +55,8 @@ MISO_fix <- function(data){
 intq <- intq %>% 
   MISO_fix()
 
-intq %>% view()
-
 # saving wrangling intq
 save(intq, file = here::here("data/intq.rda"))
+
+intq %>% 
+  view()
