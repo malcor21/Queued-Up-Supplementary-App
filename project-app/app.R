@@ -31,16 +31,16 @@ ui <-  page_sidebar(
     
     sliderInput(
       "time",
-      label = "Years",
-      min = 1995,
-      max = 2023,
-      value = c(1995, 2023),
-      sep = ""
+      label = "Adjust the slider to set time bounds:",
+      min = as.Date("01/01/1996","%m/%d/%Y"),
+      max = as.Date("01/01/2024","%m/%d/%Y"),
+      value = c(as.Date("01/01/2024"), as.Date("01/01/1996")),
+      timeFormat="%Y-%m-%d"
     ),
     
     radioButtons(
       "viz_type",
-      label = "Project count or capacity?",
+      label = "Display number of projects or total capacity?",
       c("Number of projects" = "Number of projects",
         "Total capacity" = "Total capacity")
     )
@@ -134,7 +134,7 @@ server <-  function(input, output) {
     # reactive expression for requests_bar
     sumvar_Input <- reactive({
       intq %>% 
-        filter(q_year >= input$time[1] & q_year <= input$time[2]) %>% 
+        filter(q_date >= input$time[1] & q_date <= input$time[2]) %>% 
         filter(!is.na(region)) %>% 
         sum_var(input$viz_type)
     })

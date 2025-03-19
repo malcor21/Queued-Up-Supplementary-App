@@ -1,4 +1,15 @@
-# intq summary for requests_bar ----
+library(tidyverse)
+library(sf)
+load(here::here('data/intq.rda'))
+non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final_v2.shp"))
+
+# requests_map
+
+non_iso %>% 
+  ggplot(aes(fill = RTO_ISO)) +
+  geom_sf() +
+  theme_void() +
+  scale_fill_viridis_d()
 
 
 
