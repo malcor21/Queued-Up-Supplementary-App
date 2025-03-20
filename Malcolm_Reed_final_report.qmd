@@ -74,8 +74,21 @@ the same time and outcome type controls are present in above card.
 
 ## Tab 2: Queue Duration by Region
 
+The second tab's visualization shows the typical time spent in the interconnection
+queue by completed projects, according to queue exit year. Completed projects include withdrawn and operational
+developments---those that were still active on the queue were excluded from this
+figure, as the would heavily disrupt the later year values. The typical value can
+be toggled between the mean and median residence time.
 
-
+I included this graphic to demonstrate the interconnection queue times have been
+burdensome in recent years, as per the Queued Up report. However, my graph does not
+identify an increasing trend particularly well, since delayed projects initiated in
+late 2010's and early 2020's are not actually exited the queue yet. Nevertheless, I noted 
+important takeaways from this figure. First, there has been more variation in residence
+time than I expected since the turn of the millennium. Since sample sizes per year
+and region are small, points can also diverge drastically beteween years. Finally,
+the interconnection queue process is still clearly lengthy---as of 2022, every region
+exhibited a mean residence time of over 500 days.
 
 ## Tab 3: Approval Rate by Region
 

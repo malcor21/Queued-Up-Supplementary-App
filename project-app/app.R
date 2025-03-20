@@ -122,7 +122,9 @@ approval_rate <- function(data, time) {
     total = operational + withdrawn + suspended,
     rate = ifelse(total > 0, operational / total, NA)
   ) %>% 
-    filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1]))
+    filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1])) %>% 
+    ungroup() %>% 
+    mutate(id = factor("avg"))
 }
 
 approval_rate_avg <- function(data, time) {
@@ -152,7 +154,10 @@ approval_rate_avg <- function(data, time) {
       total = operational + withdrawn + suspended,
       rate = ifelse(total > 0, operational / total, NA)
     ) %>% 
-    filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1]))
+    filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1])) %>% 
+    mutate(
+      placeholder = "Average approval rate"
+    )
 }
 
 
@@ -511,7 +516,7 @@ shinyApp(
           x = "Queue exit year",
           color = "Region",
           y = paste(input$stat_duration, "days in queue"),
-          title = paste(input$stat_duration, "time spent in interconnection queue")
+          title = paste(input$stat_duration, "time spent in interconnection queue by completed projects")
         ) +
         scale_color_viridis_d() +
         scale_y_continuous(
@@ -537,13 +542,17 @@ shinyApp(
       
     })
     
+    # approval rate chart
     output$approval_rate <- renderPlot({
       
       intq %>% 
         approval_rate(input$time_rate) %>% 
-        ggplot(aes(x = complete_year, y = rate, color = region)) +
-        geom_point(size = 4, alpha = 0.6) +
-        geom_line(aes(group = region)) +
+        ggplot() +
+        geom_point(
+          aes(x = complete_year, y = rate, color = region),
+          size = 4, alpha = 0.6
+          ) +
+        geom_line(aes(x = complete_year, y = rate, group = region, color = region)) +
         theme_minimal() +
         labs(
           x = "Queue exit year",
@@ -569,7 +578,18 @@ shinyApp(
           axis.text.y = element_text(
             size = 11
           )
-        )
+        ) +
+        {if(input$mean_check)geom_point(
+          data = (approval_rate_avg(intq, input$time_rate)),
+          aes(x = complete_year, y = rate),
+          size = 5,
+          color = "black")}  +
+        {if(input$mean_check)geom_line(
+          data = (approval_rate_avg(intq, input$time_rate)),
+          aes(x = complete_year, y = rate, group = placeholder),
+          linewidth = 1.5,
+          color = "black"
+        )}
     })
     
     

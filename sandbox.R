@@ -100,4 +100,12 @@ intq %>%
       total = operational + withdrawn + suspended,
       rate = ifelse(total > 0, operational / total, NA)
     ) %>% 
-    filter(as.numeric(as.character(complete_year)) >= 2012)
+    filter(as.numeric(as.character(complete_year)) >= 2012) %>% 
+    mutate(
+      placeholder = "avg"
+    ) %>% 
+    ggplot(aes(x = complete_year, y = rate)) + 
+    geom_point() +
+    geom_step(aes(group = placeholder))
+
+  
