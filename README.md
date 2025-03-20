@@ -2,34 +2,27 @@
 
 ## Overview
 
-This is the GitHub repository for a Stat 301-2 Final Project. This specific project
-seeks to employ predictive modeling workflows to forecast county-level vote share in the 2020
-US presidential election based on census-derived demographics data. 
+This is the GitHub repository for a Stat 302 Final Project. This specific project
+seeks to supplement the Lawrence Berkeley National Laboratory's "Queued Up
+2024" report with additional interactive data visualizations.[^1] 
 
-### Data Source
-
-This final project will utilize the "US Election Dataset" constructed by Kaggle user Essarabi.
-See Progress Memo 1 as well as the "US Election Dataset" Kaggle page for more
-information on original data sourcing.[^1] Data was retrieved by Reed Malcolm on
-February 7, 2025.
-
-[^1]: Essarabi (2024), [US Election Dataset](https://www.kaggle.com/datasets/essarabi/ultimate-us-election-dataset)
+[^1]: "Queued Up: 2024 Edition, Characteristics of Power Plants Seeking Transmission Interconnection As of the End of 2023." From J. Rand, N. Manderlink, W. Gorman, R. Wiser, J. Seel, J. Kemp, S. Jeong, and F. Karhl, 2024. <https://emp.lbl.gov/queues>
 
 ## Table of Contents
 
 ### Sub-directories
 
-- [`data`](data): contains original US Election dataset and future splits
-- [`scripts`](scripts): contains R scripts for data import, cleaning, and analysis
-- [`memos`](project memos): contains the project memos detailing earlier parts of the project
-- [`figures`](plots): contains plots displayed in the final report
+- [`data`](data): contains imported and working datasets
+- [`progress-memo`](progress-memo): contains files used for the Progress Memo assignment
+- [`project-app`](project-app): contains the final ShinyApp product for this project
+- [`test-app`](test-app): contains a working ShinyApp used for testing during this project
 
 ### Files
 
-- `Malcolm_Reed_final_report.qmd`: markdown file for creating final report
-- `Malcolm_Reed_final_report.html`: rendered html version of final report
-- `Malcolm_Reed_executive_summary.qmd`: markdown file for creating executive summary
-- `Malcolm_Reed_executive_summary.html`: rendered html version of executive summary
+- `wrangling.R`: R file used for data import and cleaning
+- `sandbox.R`: R file used for ideas testing during the project
+- `Malcolm_Reed_final_report.qmd`: markdown file for creating final project report
+- `Malcolm_Reed_final_report.html`: rendered html version of final project report
 
 ## Contact Information
 

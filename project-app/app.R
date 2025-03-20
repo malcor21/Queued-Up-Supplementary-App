@@ -95,6 +95,67 @@ approval_rate <- function(data, time) {
     filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1]))
 }
 
+approval_rate <- function(data, time) {
+  data %>% 
+  filter(q_status != "active") %>% 
+    filter(
+      (!is.na(wd_date) & wd_date <= as.Date(
+        paste("1", "1", time[2], sep = "/"), 
+        "%m/%d/%Y")
+      )|
+        (!is.na(on_date) & on_date <= as.Date(
+          paste("1", "1", time[2], sep = "/"), 
+          "%m/%d/%Y")
+        )
+    ) %>%  
+  mutate(
+    complete_date = pmax(wd_date, on_date, na.rm = TRUE)
+  ) %>% 
+  mutate(
+    complete_year = factor(as.character(format(complete_date, format = "%Y")))
+  ) %>% 
+  group_by(region, complete_year) %>% 
+  summarize(
+    operational = sum(q_status == "operational", na.rm = TRUE),
+    withdrawn = sum(q_status == "withdrawn", na.rm = TRUE),
+    suspended = sum(q_status == "suspended", na.rm = TRUE),
+    total = operational + withdrawn + suspended,
+    rate = ifelse(total > 0, operational / total, NA)
+  ) %>% 
+    filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1]))
+}
+
+approval_rate_avg <- function(data, time) {
+  data %>% 
+    filter(q_status != "active") %>% 
+    filter(
+      (!is.na(wd_date) & wd_date <= as.Date(
+        paste("1", "1", time[2], sep = "/"), 
+        "%m/%d/%Y")
+      )|
+        (!is.na(on_date) & on_date <= as.Date(
+          paste("1", "1", time[2], sep = "/"), 
+          "%m/%d/%Y")
+        )
+    ) %>%  
+    mutate(
+      complete_date = pmax(wd_date, on_date, na.rm = TRUE)
+    ) %>% 
+    mutate(
+      complete_year = factor(as.character(format(complete_date, format = "%Y")))
+    ) %>% 
+    group_by(complete_year) %>% 
+    summarize(
+      operational = sum(q_status == "operational", na.rm = TRUE),
+      withdrawn = sum(q_status == "withdrawn", na.rm = TRUE),
+      suspended = sum(q_status == "suspended", na.rm = TRUE),
+      total = operational + withdrawn + suspended,
+      rate = ifelse(total > 0, operational / total, NA)
+    ) %>% 
+    filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1]))
+}
+
+
 shinyApp(
   
   ui <-  page_sidebar(
@@ -207,6 +268,12 @@ shinyApp(
             ),
             
             br(),
+            
+            checkboxInput(
+              "mean_check",
+              "Display the yearly average approval rate?",
+              value = FALSE
+            )
             
           )
         ),
@@ -324,7 +391,7 @@ shinyApp(
         ) +
         annotate(
           "text",
-          x = -8050000,
+          x = -7950000,
           y = 4671053,
           label = paste(
             "PJM\n", 
@@ -336,7 +403,7 @@ shinyApp(
         ) +
         annotate(
           "text",
-          x = -8780124,
+          x = -8840124,
           y = 5550000,
           label = paste(
             "NYISO\n", 
@@ -348,7 +415,7 @@ shinyApp(
         ) +
         annotate(
           "text",
-          x = -7600000,
+          x = -7520000,
           y = 5305053,
           label = paste(
             "ISO-NE\n", 
@@ -357,6 +424,15 @@ shinyApp(
             sep = ""
           ),
           size = 4
+        ) +
+        labs(
+          title = "Active Interconnection Queue by US Grid Region"
+        ) +
+        theme(
+          plot.title = element_text(
+            face = "bold",
+            size = 18
+          )
         )
     })
     
@@ -466,14 +542,14 @@ shinyApp(
       intq %>% 
         approval_rate(input$time_rate) %>% 
         ggplot(aes(x = complete_year, y = rate, color = region)) +
-        geom_point(size = 4) +
+        geom_point(size = 4, alpha = 0.6) +
         geom_line(aes(group = region)) +
         theme_minimal() +
         labs(
-          x = "xlab",
+          x = "Queue exit year",
           color = "Region",
-          y = "ylab",
-          title = "title"
+          y = "Approval rate",
+          title = "Project approval rate by queue exit year"
         ) +
         scale_color_viridis_d() +
         scale_y_continuous(

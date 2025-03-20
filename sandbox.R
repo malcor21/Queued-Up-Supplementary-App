@@ -72,3 +72,32 @@ intq %>%
     total = operational + withdrawn + suspended,
     rate = ifelse(total > 0, operational / total, NA)
   )
+
+#approval rate avg
+  intq %>% 
+    filter(q_status != "active") %>% 
+    filter(
+      (!is.na(wd_date) & wd_date <= as.Date(
+        paste("1", "1", "2024", sep = "/"), 
+        "%m/%d/%Y")
+      )|
+        (!is.na(on_date) & on_date <= as.Date(
+          paste("1", "1", "2024", sep = "/"), 
+          "%m/%d/%Y")
+        )
+    ) %>%  
+    mutate(
+      complete_date = pmax(wd_date, on_date, na.rm = TRUE)
+    ) %>% 
+    mutate(
+      complete_year = factor(as.character(format(complete_date, format = "%Y")))
+    ) %>% 
+    group_by(complete_year) %>% 
+    summarize(
+      operational = sum(q_status == "operational", na.rm = TRUE),
+      withdrawn = sum(q_status == "withdrawn", na.rm = TRUE),
+      suspended = sum(q_status == "suspended", na.rm = TRUE),
+      total = operational + withdrawn + suspended,
+      rate = ifelse(total > 0, operational / total, NA)
+    ) %>% 
+    filter(as.numeric(as.character(complete_year)) >= 2012)

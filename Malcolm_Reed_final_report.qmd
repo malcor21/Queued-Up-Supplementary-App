@@ -21,11 +21,78 @@ format:
 
 ## Introduction
 
+RETOOL
+Electricity demand has seen an unexpected rise in recent years due to new heavy-hitter
+consumers, like manufacturing facilities and data centers. To keep up with load growth
+while integrating clean, cheap renewables, US electricity infrastructure must be reformed,
+modernized, and expanded. Currently, a wealth of (largely renewable) energy projects are 
+seeking approval to eventually enter the grid, a process known as the interconnection
+queue. [^1]
+
+The "Queued Up 2024" report provides a comprehensive picture on the type, location,
+and status of energy developments moving through the interconnection process. The
+attached PowerPoint briefing, which can be found on the project's website, presents
+a wide variety of insightful static images. The complexity of the data
+suggests that dynamic visualization could prove a worthwhile supplement to the report.
+In fact, the "Queued Up 2024" page already includes a useful interactive
+portal that hosts a number of highly polished visualizations on queued generative capacity.
+However, further visualization exercises could seek to translate other dimensions
+of the interconnection queue dataset into a dynamic context.
+
+[^1]: "Lots of demand, too little grid: The state of the US power sector", From J. St. John, 2025, Canary Media. <https://www.canarymedia.com/articles/transmission/lots-of-demand-too-little-grid-the-us-power-sector-in-202>
+
+## Tab 1: Interconnection Queue by Region
+
+### Subtab 1: Mainland US Map
+
+I first created a map of active projects (or capacity) in the interconnection queue
+by US grid region. While a figure like this was included in the original "Queued Up"
+report, I thought it would nevertheless be a useful resource to frame the following
+figures. 
+
+A comprehensive shapefile of US grid regions was not readily available on the internet,
+so I used QGIS to synthesize one. I joined an existing shapefile of ISO regions
+created by the US Energy Information Administration with a basic state boundaries
+shapefile from the US Census Bureau.[^2] [^3] I then used QGIS tools to create a new layer
+including properly labeled non-ISO regions. The resulting shapefile, while not perfect,
+was useful to provide a generally accurate picture of the complex US electricity
+landscape.
+
+The Mainland US Map visualization displays the number of projects or amount of
+capacity (including storage and generation) waiting in each region's interconnection
+queue for any time interval covered by the Queued Up dataset. 
+
+[^2]: https://atlas.eia.gov/datasets/eia::rto-regions/explore
+
+[^3]: hi
+
+### Subtab 2: Bar Chart
+
+The second visualization under the Interconnection Queue by Region tab simply
+displays the previous information in a more digestible bar chart format. Note that
+the same time and outcome type controls are present in above card.
+
+## Tab 2: Queue Duration by Region
 
 
-## Viz 1
+
+
+## Tab 3: Approval Rate by Region
+
+
+
+
 
 
 
 
 ## Conclusions and Future Steps
+
+
+
+fulfilling
+didn't get to do everything
+- could make figures more complex - more options
+- different ideas, like a button spitting out a random entry
+hindered by randomness throughout dataset - surprising
+future studies - join dataset with other elec info for deeper analysis, more informed wrangling

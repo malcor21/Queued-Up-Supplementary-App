@@ -3052,8 +3052,14 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#summary" id="toc-summary" class="nav-link active" data-scroll-target="#summary">Summary</a></li>
-  <li><a href="#viz-1" id="toc-viz-1" class="nav-link" data-scroll-target="#viz-1">Viz 1</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#tab-1-interconnection-queue-by-region" id="toc-tab-1-interconnection-queue-by-region" class="nav-link" data-scroll-target="#tab-1-interconnection-queue-by-region">Tab 1: Interconnection Queue by Region</a>
+  <ul class="collapse">
+  <li><a href="#subtab-1-mainland-us-map" id="toc-subtab-1-mainland-us-map" class="nav-link" data-scroll-target="#subtab-1-mainland-us-map">Subtab 1: Mainland US Map</a></li>
+  <li><a href="#subtab-2-bar-chart" id="toc-subtab-2-bar-chart" class="nav-link" data-scroll-target="#subtab-2-bar-chart">Subtab 2: Bar Chart</a></li>
+  </ul></li>
+  <li><a href="#tab-2-queue-duration-by-region" id="toc-tab-2-queue-duration-by-region" class="nav-link" data-scroll-target="#tab-2-queue-duration-by-region">Tab 2: Queue Duration by Region</a></li>
+  <li><a href="#tab-3-approval-rate-by-region" id="toc-tab-3-approval-rate-by-region" class="nav-link" data-scroll-target="#tab-3-approval-rate-by-region">Tab 3: Approval Rate by Region</a></li>
   <li><a href="#conclusions-and-future-steps" id="toc-conclusions-and-future-steps" class="nav-link" data-scroll-target="#conclusions-and-future-steps">Conclusions and Future Steps</a></li>
   </ul>
 </nav>
@@ -3106,17 +3112,44 @@ Github Repo Link
 <p><a href="https://github.com/malcor21/stat-302-final.git">Final Project GitHub Repo Link</a></p>
 </div>
 </div>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>RETOOL Electricity demand has seen an unexpected rise in recent years due to new heavy-hitter consumers, like manufacturing facilities and data centers. To keep up with load growth while integrating clean, cheap renewables, US electricity infrastructure must be reformed, modernized, and expanded. Currently, a wealth of (largely renewable) energy projects are seeking approval to eventually enter the grid, a process known as the interconnection queue. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The “Queued Up 2024” report provides a comprehensive picture on the type, location, and status of energy developments moving through the interconnection process. The attached PowerPoint briefing, which can be found on the project’s website, presents a wide variety of insightful static images. The complexity of the data suggests that dynamic visualization could prove a worthwhile supplement to the report. In fact, the “Queued Up 2024” page already includes a useful interactive portal that hosts a number of highly polished visualizations on queued generative capacity. However, further visualization exercises could seek to translate other dimensions of the interconnection queue dataset into a dynamic context.</p>
 </section>
-<section id="viz-1" class="level2">
-<h2 class="anchored" data-anchor-id="viz-1">Viz 1</h2>
+<section id="tab-1-interconnection-queue-by-region" class="level2">
+<h2 class="anchored" data-anchor-id="tab-1-interconnection-queue-by-region">Tab 1: Interconnection Queue by Region</h2>
+<section id="subtab-1-mainland-us-map" class="level3">
+<h3 class="anchored" data-anchor-id="subtab-1-mainland-us-map">Subtab 1: Mainland US Map</h3>
+<p>I first created a map of active projects (or capacity) in the interconnection queue by US grid region. While a figure like this was included in the original “Queued Up” report, I thought it would nevertheless be a useful resource to frame the following figures.</p>
+<p>A comprehensive shapefile of US grid regions was not readily available on the internet, so I used QGIS to synthesize one. I joined an existing shapefile of ISO regions created by the US Energy Information Administration with a basic state boundaries shapefile from the US Census Bureau.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> I then used QGIS tools to create a new layer including properly labeled non-ISO regions. The resulting shapefile, while not perfect, was useful to provide a generally accurate picture of the complex US electricity landscape.</p>
+<p>The Mainland US Map visualization displays the number of projects or amount of capacity (including storage and generation) waiting in each region’s interconnection queue for any time interval covered by the Queued Up dataset.</p>
+</section>
+<section id="subtab-2-bar-chart" class="level3">
+<h3 class="anchored" data-anchor-id="subtab-2-bar-chart">Subtab 2: Bar Chart</h3>
+<p>The second visualization under the Interconnection Queue by Region tab simply displays the previous information in a more digestible bar chart format. Note that the same time and outcome type controls are present in above card.</p>
+</section>
+</section>
+<section id="tab-2-queue-duration-by-region" class="level2">
+<h2 class="anchored" data-anchor-id="tab-2-queue-duration-by-region">Tab 2: Queue Duration by Region</h2>
+</section>
+<section id="tab-3-approval-rate-by-region" class="level2">
+<h2 class="anchored" data-anchor-id="tab-3-approval-rate-by-region">Tab 3: Approval Rate by Region</h2>
 </section>
 <section id="conclusions-and-future-steps" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions-and-future-steps">Conclusions and Future Steps</h2>
+<p>fulfilling didn’t get to do everything - could make figures more complex - more options - different ideas, like a button spitting out a random entry hindered by randomness throughout dataset - surprising future studies - join dataset with other elec info for deeper analysis, more informed wrangling</p>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>“Lots of demand, too little grid: The state of the US power sector”, From J. St. John, 2025, Canary Media. <a href="https://www.canarymedia.com/articles/transmission/lots-of-demand-too-little-grid-the-us-power-sector-in-202" class="uri">https://www.canarymedia.com/articles/transmission/lots-of-demand-too-little-grid-the-us-power-sector-in-202</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://atlas.eia.gov/datasets/eia::rto-regions/explore<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>hi<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
