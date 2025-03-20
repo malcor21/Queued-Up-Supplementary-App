@@ -23,7 +23,40 @@ sum_var <- function(data, viz_type) {
   } 
 }
 
-upper_bound <- function(data, time) {
+date_difference <- function(data, time) {
+  data %>% 
+    filter(q_status == "operational") %>% 
+    filter(
+    (!is.na(wd_date) & wd_date <= as.Date(
+      paste("1", "1", time[2], sep = "/"), 
+      "%m/%d/%Y")
+    )|
+      (!is.na(on_date) & on_date <= as.Date(
+        paste("1", "1", time[2], sep = "/"), 
+        "%m/%d/%Y")
+      )
+  ) %>% 
+    mutate(
+      complete_date = pmax(wd_date, on_date, na.rm = TRUE)
+    ) %>% 
+    mutate(
+      current_date = as.Date("01/01/2024", "%m/%d/%Y"),
+    ) %>% 
+    mutate(
+      date_diff = pmin(complete_date, current_date) - q_date
+    ) %>%  
+    filter(
+      date_diff >= 0
+    ) %>% 
+    summarize(
+      mean = as.numeric(mean(date_diff, na.rm = TRUE)),
+      median = as.numeric(median(date_diff, na.rm = TRUE)),
+      .by = c(region, q_year)
+    ) %>% 
+  filter(q_year >= time[1])
+}
+
+upper_bound_date <- function(data, time) {
   data %>%
     filter(
       (!is.na(wd_date) & wd_date <= time[2]) |
@@ -90,13 +123,45 @@ shinyApp(
       
       nav_panel(
         
-        "Tab 2",
+        "Queue Duration by Region",
+        
+        card(
+          
+          flowLayout(
+            
+            br(),
+            
+            sliderInput(
+              "time_duration",
+              label = "Adjust the slider to set time bounds:",
+              min = 1996,
+              max = 2024,
+              value = c(1996, 2024),
+              sep = ""
+            ),
+            
+            br(),
+            
+            radioButtons(
+              "stat_duration",
+              label = "Mean or median queue time?",
+              choices = c(
+                "Mean" = "Mean",
+                "Median" = "Median"
+              )
+            )
+          )
+        ),
         
         plotOutput(outputId = "queue_time")
         
       ),
       
-      nav_panel("Tab 3", "Here's some orphaned content without sub-tabs"),
+      nav_panel("Approval Rate by Region", 
+                
+                "Here's some orphaned content without sub-tabs"
+                
+                ),
       
       id = "parent_tabs"
     )
@@ -104,45 +169,11 @@ shinyApp(
   
   server <-  function(input, output) {
     
-    output$tab_controls <- renderUI({
-      choices = if (input$parent_tabs == "Tab 1") {
-        c("choices", "for", "tab 1")
-      } else if (input$parent_tabs == "Tab 2") {
-        c("tab 2", "settings")
-      }
-      
-      if (length(choices)) {
-        radioButtons(
-          "tab_controls",
-          "Controls",
-          choices = choices
-        )
-      }
-      
-    })
-    
-    output$subtab_controls <- renderUI({
-      if (input$parent_tabs == "Tab 2" & input$subtab_2 == "Function 1") {
-        radioButtons(
-          "subtab_controls",
-          "Additional controls for Tab 2, Function 1",
-          choices = letters[1:5]
-        )
-      } else if (input$parent_tabs == "Tab 2" & input$subtab_2 == "Function 2") {
-        selectInput(
-          "subtab_controls",
-          "Different input for Tab 2, Function 2",
-          choices = letters[6:10]
-        )
-      }
-      
-    })
-    
     # reactive expression for requests_map and requests_bar
     sumvar_Input <- reactive({
       intq %>% 
         filter(q_date >= input$time[1]) %>% 
-        upper_bound(input$time) %>% 
+        upper_bound_date(input$time) %>% 
         filter(!is.na(region)) %>% 
         sum_var(input$viz_type)
     })
@@ -330,26 +361,35 @@ shinyApp(
       
     })
     
+    # queue time var
+    time_var <- reactive({
+      if_else(
+        input$stat_duration == "Mean",
+        "mean",
+        "median"
+      )
+    })
+    
     # queue time 
     output$queue_time <- renderPlot({
       
-      ## PLACEHOLDER
-      sumvar_Input() %>%
-        ggplot(aes(x = region, y = sum, fill = region)) +
-        geom_col() +
+      intq %>% 
+        date_difference(input$time_duration) %>% 
+        ggplot(aes(x = q_year, y = .data[[time_var()]], color = region)) +
+        geom_point(size = 4) +
+        geom_line() +
         theme_minimal() +
         labs(
-          title = requests_bar_title(),
-          x = "Region",
-          y = requests_bar_ylab()
+          x = "Queue entry year",
+          color = "Region",
+          y = paste(input$stat_duration, "days in queue"),
+          title = paste(input$stat_duration, "time spent in interconnection queue")
         ) +
-        scale_fill_viridis_d() +
-        theme(
-          legend.position = "none"
-        ) +
+        scale_color_viridis_d() +
         scale_y_continuous(
           labels = scales::comma,
-          expand= c(0, 0)
+          expand= c(0, 0),
+          limits = c(0, 4500)
         ) +
         theme(
           plot.title = element_text(
