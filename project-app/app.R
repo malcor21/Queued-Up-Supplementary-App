@@ -165,8 +165,12 @@ shinyApp(
   
   ui <-  page_sidebar(
     
-    ## ADD TEXT -------
-    sidebar = NULL,
+    sidebar = sidebar(
+      "This ShinyApp was developed as a interactive visualization supplement
+      to the \"Queued Up 2024\" report produced by the Lawrence Berkeley National
+      Laboratory's Energy Markets & Policy department. See the final project report
+      located in this project's GitHub repository for more details."
+    ),
     
     navset_card_underline(
       title = "\"Queued Up\" Supplementary App",
@@ -431,7 +435,7 @@ shinyApp(
           size = 4
         ) +
         labs(
-          title = "Active Interconnection Queue by US Grid Region"
+          title = "Active Projects in the Interconnection Queue by US Grid Region"
         ) +
         theme(
           plot.title = element_text(
@@ -516,7 +520,7 @@ shinyApp(
           x = "Queue exit year",
           color = "Region",
           y = paste(input$stat_duration, "days in queue"),
-          title = paste(input$stat_duration, "time spent in interconnection queue by completed projects")
+          title = paste(input$stat_duration, "time spent in the interconnection queue by completed projects")
         ) +
         scale_color_viridis_d() +
         scale_y_continuous(
