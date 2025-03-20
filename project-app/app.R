@@ -25,7 +25,7 @@ sum_var <- function(data, viz_type) {
 
 date_difference <- function(data, time) {
   data %>% 
-    filter(q_status == "operational") %>% 
+    filter(q_status != "active") %>% 
     filter(
     (!is.na(wd_date) & wd_date <= as.Date(
       paste("1", "1", time[2], sep = "/"), 
@@ -40,20 +40,20 @@ date_difference <- function(data, time) {
       complete_date = pmax(wd_date, on_date, na.rm = TRUE)
     ) %>% 
     mutate(
-      current_date = as.Date("01/01/2024", "%m/%d/%Y"),
-    ) %>% 
-    mutate(
-      date_diff = pmin(complete_date, current_date) - q_date
+      date_diff = complete_date - q_date
     ) %>%  
     filter(
       date_diff >= 0
     ) %>% 
+    mutate(
+      complete_year = factor(as.character(format(complete_date, format = "%Y")))
+    ) %>%
     summarize(
       mean = as.numeric(mean(date_diff, na.rm = TRUE)),
       median = as.numeric(median(date_diff, na.rm = TRUE)),
-      .by = c(region, q_year)
+      .by = c(region, complete_year)
     ) %>% 
-  filter(q_year >= time[1])
+  filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1]))
 }
 
 upper_bound_date <- function(data, time) {
@@ -63,6 +63,36 @@ upper_bound_date <- function(data, time) {
         (!is.na(on_date) & on_date <= time[2]) |
         (is.na(wd_date) & is.na(on_date))
     )
+}
+
+approval_rate <- function(data, time) {
+  data %>% 
+  filter(q_status != "active") %>% 
+    filter(
+      (!is.na(wd_date) & wd_date <= as.Date(
+        paste("1", "1", time[2], sep = "/"), 
+        "%m/%d/%Y")
+      )|
+        (!is.na(on_date) & on_date <= as.Date(
+          paste("1", "1", time[2], sep = "/"), 
+          "%m/%d/%Y")
+        )
+    ) %>%  
+  mutate(
+    complete_date = pmax(wd_date, on_date, na.rm = TRUE)
+  ) %>% 
+  mutate(
+    complete_year = factor(as.character(format(complete_date, format = "%Y")))
+  ) %>% 
+  group_by(region, complete_year) %>% 
+  summarize(
+    operational = sum(q_status == "operational", na.rm = TRUE),
+    withdrawn = sum(q_status == "withdrawn", na.rm = TRUE),
+    suspended = sum(q_status == "suspended", na.rm = TRUE),
+    total = operational + withdrawn + suspended,
+    rate = ifelse(total > 0, operational / total, NA)
+  ) %>% 
+    filter(as.numeric(as.character(complete_year)) >= as.numeric(time[1]))
 }
 
 shinyApp(
@@ -134,9 +164,9 @@ shinyApp(
             sliderInput(
               "time_duration",
               label = "Adjust the slider to set time bounds:",
-              min = 1996,
-              max = 2024,
-              value = c(1996, 2024),
+              min = 1999,
+              max = 2023,
+              value = c(1999, 2023),
               sep = ""
             ),
             
@@ -157,9 +187,31 @@ shinyApp(
         
       ),
       
-      nav_panel("Approval Rate by Region", 
+      nav_panel(
+        
+        "Approval Rate by Region", 
                 
-                "Here's some orphaned content without sub-tabs"
+        card(
+          
+          flowLayout(
+            
+            br(),
+            
+            sliderInput(
+              "time_rate",
+              label = "Adjust the slider to set time bounds:",
+              min = 1999,
+              max = 2023,
+              value = c(1999, 2023),
+              sep = ""
+            ),
+            
+            br(),
+            
+          )
+        ),
+        
+        plotOutput(outputId = "approval_rate")
                 
                 ),
       
@@ -375,12 +427,12 @@ shinyApp(
       
       intq %>% 
         date_difference(input$time_duration) %>% 
-        ggplot(aes(x = q_year, y = .data[[time_var()]], color = region)) +
+        ggplot(aes(x = complete_year, y = .data[[time_var()]], color = region)) +
         geom_point(size = 4) +
-        geom_line() +
+        geom_line(aes(group = region)) +
         theme_minimal() +
         labs(
-          x = "Queue entry year",
+          x = "Queue exit year",
           color = "Region",
           y = paste(input$stat_duration, "days in queue"),
           title = paste(input$stat_duration, "time spent in interconnection queue")
@@ -407,6 +459,41 @@ shinyApp(
           )
         )
       
+    })
+    
+    output$approval_rate <- renderPlot({
+      
+      intq %>% 
+        approval_rate(input$time_rate) %>% 
+        ggplot(aes(x = complete_year, y = rate, color = region)) +
+        geom_point(size = 4) +
+        geom_line(aes(group = region)) +
+        theme_minimal() +
+        labs(
+          x = "xlab",
+          color = "Region",
+          y = "ylab",
+          title = "title"
+        ) +
+        scale_color_viridis_d() +
+        scale_y_continuous(
+          limits = c(0, 1)
+        ) +
+        theme(
+          plot.title = element_text(
+            face = "bold",
+            size = 18
+          ),
+          axis.title = element_text(
+            size = 14
+          ),
+          axis.text.x = element_text(
+            size = 13
+          ),
+          axis.text.y = element_text(
+            size = 11
+          )
+        )
     })
     
     
