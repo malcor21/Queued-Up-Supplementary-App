@@ -27,73 +27,82 @@ upper_bound <- function(data, time) {
   data %>%
     filter(
       (!is.na(wd_date) & wd_date <= time[2]) |
-      (!is.na(on_date) & on_date <= time[2]) |
-      (is.na(wd_date) & is.na(on_date))
+        (!is.na(on_date) & on_date <= time[2]) |
+        (is.na(wd_date) & is.na(on_date))
     )
 }
 
 shinyApp(
-     
-ui <-  page_sidebar(
   
-  sidebar = sidebar(
+  ui <-  page_sidebar(
     
-    sliderInput(
-      "time",
-      label = "Adjust the slider to set time bounds:",
-      min = as.Date("01/01/1996","%m/%d/%Y"),
-      max = as.Date("01/01/2024","%m/%d/%Y"),
-      value = c(as.Date("1996/01/01"), as.Date("2024/01/01")),
-      timeFormat="%Y-%m-%d"
-    ),
+    ## ADD TEXT -------
+    sidebar = NULL,
     
-    radioButtons(
-      "viz_type",
-      label = "Display number of projects or total capacity?",
-      c("Number of projects" = "Number of projects",
-        "Total capacity" = "Total capacity")
+    navset_card_underline(
+      title = "\"Queued Up\" Supplementary App",
+      
+      nav_panel(
+        
+        "Interconnection Queue by Region",
+        
+        card(
+          
+          flowLayout(
+            
+            br(),
+            
+            sliderInput(
+              "time",
+              label = "Adjust the slider to set time bounds:",
+              min = as.Date("01/01/1996","%m/%d/%Y"),
+              max = as.Date("01/01/2024","%m/%d/%Y"),
+              value = c(as.Date("1996/01/01"), as.Date("2024/01/01")),
+              timeFormat="%Y-%m-%d"
+            ),
+            
+            br(),
+            
+            radioButtons(
+              "viz_type",
+              label = "Display number of projects or total capacity?",
+              c("Number of projects" = "Number of projects",
+                "Total capacity" = "Total capacity")
+            )
+          )
+        ),
+        
+        navset_card_underline(
+          
+          nav_panel(
+            "Mainland US Map", 
+            plotOutput(outputId = "requests_map")
+          ),
+          
+          nav_panel(
+            "Bar Chart", 
+            plotOutput(outputId = "requests_bar")
+          ),
+          
+          id = "subtab_1"
+        )
+      ),
+      
+      nav_panel(
+        
+        "Tab 2",
+        
+        plotOutput(outputId = "queue_time")
+        
+      ),
+      
+      nav_panel("Tab 3", "Here's some orphaned content without sub-tabs"),
+      
+      id = "parent_tabs"
     )
-    
   ),
   
-  navset_card_underline(
-    title = "\"Queued Up\" Supplementary App",
-    
-    nav_panel(
-      
-      "Interconnection Queue by Region",
-      
-      navset_card_underline(
-        
-        nav_panel(
-          "Mainland US Map", 
-          plotOutput(outputId = "requests_map")
-          ),
-        
-        nav_panel(
-          "Bar Chart", 
-          plotOutput(outputId = "requests_bar")
-          ),
-        
-        id = "subtab_1"
-      )
-    ),
-    
-    nav_panel(
-      
-      "Tab 2",
-      
-      plotOutput(outputId = "queue_time")
-      
-    ),
-    
-    nav_panel("Tab 3", "Here's some orphaned content without sub-tabs"),
-    
-    id = "parent_tabs"
-  )
-),
-  
-server <-  function(input, output) {
+  server <-  function(input, output) {
     
     output$tab_controls <- renderUI({
       choices = if (input$parent_tabs == "Tab 1") {
@@ -167,7 +176,7 @@ server <-  function(input, output) {
             subset(sumvar_Input(), region == "CAISO", select = sum),
             suffix(),
             sep = ""
-              ),
+          ),
           size = 4
         ) +
         annotate(
@@ -273,7 +282,7 @@ server <-  function(input, output) {
       case_when(
         input$viz_type == "Number of projects" ~ "Projects in queue by region",
         input$viz_type == "Total capacity" ~ "Total queued capacity by region"
-    )
+      )
     })
     
     requests_bar_ylab <- reactive({

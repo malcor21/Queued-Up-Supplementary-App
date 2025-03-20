@@ -36,25 +36,8 @@ shinyApp(
   
   ui <-  page_sidebar(
     
-    sidebar = sidebar(
-      
-      sliderInput(
-        "time",
-        label = "Adjust the slider to set time bounds:",
-        min = as.Date("01/01/1996","%m/%d/%Y"),
-        max = as.Date("01/01/2024","%m/%d/%Y"),
-        value = c(as.Date("1996/01/01"), as.Date("2024/01/01")),
-        timeFormat="%Y-%m-%d"
-      ),
-      
-      radioButtons(
-        "viz_type",
-        label = "Display number of projects or total capacity?",
-        c("Number of projects" = "Number of projects",
-          "Total capacity" = "Total capacity")
-      )
-      
-    ),
+    ## ADD TEXT -------
+    sidebar = NULL,
     
     navset_card_underline(
       title = "\"Queued Up\" Supplementary App",
@@ -62,6 +45,32 @@ shinyApp(
       nav_panel(
         
         "Interconnection Queue by Region",
+        
+        card(
+          
+          flowLayout(
+          
+          br(),
+            
+          sliderInput(
+            "time",
+            label = "Adjust the slider to set time bounds:",
+            min = as.Date("01/01/1996","%m/%d/%Y"),
+            max = as.Date("01/01/2024","%m/%d/%Y"),
+            value = c(as.Date("1996/01/01"), as.Date("2024/01/01")),
+            timeFormat="%Y-%m-%d"
+          ),
+          
+          br(),
+          
+          radioButtons(
+            "viz_type",
+            label = "Display number of projects or total capacity?",
+            c("Number of projects" = "Number of projects",
+              "Total capacity" = "Total capacity")
+          )
+          )
+          ),
         
         navset_card_underline(
           
