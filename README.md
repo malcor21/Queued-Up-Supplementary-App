@@ -1,4 +1,5 @@
-## Final Project Repo Setup
+## "Queued Up" Supplementary App
+### Final Project Repo Setup
 
 ## Overview
 
