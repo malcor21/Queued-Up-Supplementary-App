@@ -3132,13 +3132,18 @@ Github Repo Link
 </section>
 <section id="tab-2-queue-duration-by-region" class="level2">
 <h2 class="anchored" data-anchor-id="tab-2-queue-duration-by-region">Tab 2: Queue Duration by Region</h2>
+<p>The second tab’s visualization shows the typical time spent in the interconnection queue by completed projects, according to queue exit year. Completed projects include withdrawn and operational developments—those that were still active on the queue were excluded from this figure, as the would heavily disrupt the later year values. The typical value can be toggled between the mean and median residence time.</p>
+<p>I included this graphic to demonstrate the interconnection queue times have been burdensome in recent years, as per the Queued Up report. However, my graph does not identify an increasing trend particularly well, since delayed projects initiated in late 2010’s and early 2020’s are not actually exited the queue yet. Nevertheless, I noted important takeaways from this figure. First, there has been more variation in residence time than I expected since the turn of the millennium. Since sample sizes per year and region are small, points can also diverge drastically beteween years. Finally, the interconnection queue process is still clearly lengthy—as of 2022, every region exhibited a mean residence time of over 500 days.</p>
 </section>
 <section id="tab-3-approval-rate-by-region" class="level2">
 <h2 class="anchored" data-anchor-id="tab-3-approval-rate-by-region">Tab 3: Approval Rate by Region</h2>
+<p>The third graphic shows project approval rate, which is defined as the percent of development that exit the queue as “operational” rather than “withdrawn” or “suspended”. As with the previous graphic, small sample sizes of completed projects per region per year cause approval rates to vary wildly between years. Additionally, this figure made me somewhat wary of the dataset’s quality given consistently perfect approval rates for some regions.</p>
+<p>It is notable that the regions with initially high approval rates have experienced drops over the past two decades and that most regions have demonstrated a success percentage below 50% during the 2020’s. But to cut through the noise, I added an indicator for mean approval rate across all regions through the checkbox. This mean approval rate has indeed remained quite low, generally under 50%, since the late 2000’s, indicating that the interconnection queue might truly be an obstacle to energy development.</p>
 </section>
 <section id="conclusions-and-future-steps" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions-and-future-steps">Conclusions and Future Steps</h2>
-<p>fulfilling didn’t get to do everything - could make figures more complex - more options - different ideas, like a button spitting out a random entry hindered by randomness throughout dataset - surprising future studies - join dataset with other elec info for deeper analysis, more informed wrangling</p>
+<p>I found this visualization project to be fulfilling. I enjoyed working with a dataset close to my professional interest, and I also appreciated the opportunity to conduct self-directed learning to create the ShinyApp I wanted. And although the data cleaning process was more intensive than I expected, it represented an interesting challenge to my non-visualization abilties in R.</p>
+<p>If given more time, I would have built more complexity into the existing figures, adding new interactive elements. I also would have liked to have added more visualizations to extend the narrative of this project, such as the difference between proposed and actual approval dates among regions. Future viz projects using this dataset could utilize more advanced wrangling techniques to eliminate inaccuracies and conduct joins with other useful electricity-related datasets for deeper analyses.</p>
 </section>
 
 
@@ -3146,8 +3151,8 @@ Github Repo Link
 
 <ol>
 <li id="fn1"><p>“Lots of demand, too little grid: The state of the US power sector”, From J. St. John, 2025, Canary Media. <a href="https://www.canarymedia.com/articles/transmission/lots-of-demand-too-little-grid-the-us-power-sector-in-202" class="uri">https://www.canarymedia.com/articles/transmission/lots-of-demand-too-little-grid-the-us-power-sector-in-202</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>https://atlas.eia.gov/datasets/eia::rto-regions/explore<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>hi<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>“RTO Region”, U.S. Energy Information Administration, 18 February 2025. <a href="https://atlas.eia.gov/datasets/eia::rto-regions/explore" class="uri">https://atlas.eia.gov/datasets/eia::rto-regions/explore</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>“2024 TIGER/Line Shapefiles: States (and equivalent)”, U.S. Census Bureau Geography Division, 2024. <a href="https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2024&amp;layergroup=States+%28and+equivalent%29" class="uri">https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2024&amp;layergroup=States+%28and+equivalent%29</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

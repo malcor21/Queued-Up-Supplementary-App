@@ -62,9 +62,11 @@ The Mainland US Map visualization displays the number of projects or amount of
 capacity (including storage and generation) waiting in each region's interconnection
 queue for any time interval covered by the Queued Up dataset. 
 
-[^2]: https://atlas.eia.gov/datasets/eia::rto-regions/explore
+[^2]: "RTO Region", U.S. Energy Information Administration, 18 February 2025. 
+<https://atlas.eia.gov/datasets/eia::rto-regions/explore>
 
-[^3]: hi
+[^3]: "2024 TIGER/Line Shapefiles: States (and equivalent)", U.S. Census Bureau
+Geography Division, 2024. <https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2024&layergroup=States+%28and+equivalent%29>
 
 ### Subtab 2: Bar Chart
 
@@ -92,20 +94,31 @@ exhibited a mean residence time of over 500 days.
 
 ## Tab 3: Approval Rate by Region
 
+The third graphic shows project approval rate, which is defined as the percent of
+development that exit the queue as "operational" rather than "withdrawn" or "suspended".
+As with the previous graphic, small sample sizes of completed projects per region
+per year cause approval rates to vary wildly between years. Additionally, this
+figure made me somewhat wary of the dataset's quality given consistently
+perfect approval rates for some regions.
 
-
-
-
-
-
+It is notable that the regions with initially high approval rates have experienced 
+drops over the past two decades and that most regions have demonstrated a success
+percentage below 50% during the 2020's. But to cut through the noise, I added an indicator
+for mean approval rate across all regions through the checkbox. This mean approval rate has
+indeed remained quite low, generally under 50%, since the late 2000's, indicating that
+the interconnection queue might truly be an obstacle to energy development.
 
 ## Conclusions and Future Steps
 
+I found this visualization project to be fulfilling. I enjoyed working with a dataset
+close to my professional interest, and I also appreciated the opportunity to conduct
+self-directed learning to create the ShinyApp I wanted. And although the data cleaning
+process was more intensive than I expected, it represented an interesting challenge
+to my non-visualization abilties in R.
 
-
-fulfilling
-didn't get to do everything
-- could make figures more complex - more options
-- different ideas, like a button spitting out a random entry
-hindered by randomness throughout dataset - surprising
-future studies - join dataset with other elec info for deeper analysis, more informed wrangling
+If given more time, I would have built more complexity into the existing figures,
+adding new interactive elements. I also would have liked to have added more visualizations
+to extend the narrative of this project, such as the difference between proposed and
+actual approval dates among regions. Future viz projects using this dataset could
+utilize more advanced wrangling techniques to eliminate inaccuracies and conduct
+joins with other useful electricity-related datasets for deeper analyses.
