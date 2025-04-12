@@ -6,8 +6,8 @@ library(sf)
 library(shiny)
 
 # loading data ----
-non_iso <- read_sf(here::here("data/non-ISO/non_ISO_final_v2.shp"))
-load(here::here("data/intq.rda"))
+non_iso <- read_sf("data/non-ISO/non_ISO_final_v2.shp")
+load("data/intq.rda")
 
 # defining functions ----
 sum_var <- function(data, viz_type) {
