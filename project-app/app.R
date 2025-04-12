@@ -336,7 +336,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -348,7 +348,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -360,7 +360,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -372,7 +372,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -384,7 +384,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -396,7 +396,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -408,7 +408,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -420,7 +420,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         annotate(
           "text",
@@ -432,7 +432,7 @@ shinyApp(
             suffix(),
             sep = ""
           ),
-          size = 4
+          size = 3.1
         ) +
         labs(
           title = "Active Projects in the Interconnection Queue by US Grid Region"
