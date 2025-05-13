@@ -25,10 +25,15 @@ seeks to supplement the Lawrence Berkeley National Laboratory's "Queued Up
 - `Malcolm_Reed_final_report.qmd`: markdown file for creating final project report
 - `Malcolm_Reed_final_report.html`: rendered html version of final project report
 
+## ShinyApp Web Instance
+
+You can find an online instance of this project's ShinyApp deliverable
+at [`this link`](https://rbmalc712.shinyapps.io/Queued-Up-Supplementary/).
+
 ## Contact Information
 
 This project was completed for a Northwestern University course on the Data
 Science Minor track of the Program in Statistics. The creator of this project
 can be contacted at:
 
-- Reed Malcolm, reedmalcolm2025@u.northwestern.edu
+- Reed Malcolm, rbmalc712@gmail.com
