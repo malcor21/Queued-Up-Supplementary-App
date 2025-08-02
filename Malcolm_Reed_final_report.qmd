@@ -4,7 +4,7 @@ subtitle: |
   | Final Project 
   | Data Visualization (STAT 302)
 author: "Reed Malcolm"
-date: today
+date: 03 19, 2025
 
 format:
   html:
@@ -38,7 +38,7 @@ queue. In addition to a PowerPoint briefing, the "Queued Up 2024" report provide
 readers with a foundational dataset that I used for this final project.
 While the briefing also incorporates a polished interactive data visualization portal,
 not all aspects of the "Queued Up 2024" dataset are translated into that format.[^1] The
-aim of this project was therefore to create a supplementary ShinyApp for interactive
+aim of this project was therefore to create a [supplementary ShinyApp](https://rbmalc712.shinyapps.io/Queued-Up-Supplementary/) for interactive
 data visualization of those untranslated measures. I focused on interconnection queue residence times and approval
 rates, particularly across the US's grid regions, to reinforce the importance of
 electric grid reform today.
